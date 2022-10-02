@@ -1,0 +1,6 @@
+[submodule "backend/devenv-backend"]
+	path = backend/devenv-backend
+	url = https://github.com/HansenBerlin/devenv-backend.git
+[submodule "frontend/devenv-frontend"]
+	path = frontend/devenv-frontend
+	url = https://github.com/HansenBerlin/devenv-frontend.git

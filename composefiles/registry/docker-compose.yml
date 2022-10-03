@@ -1,64 +1,11 @@
-version: "3.7"
 services:
-  nginx_local_dev_proxy:
-    container_name: devenv-rp
-    image: devenv-nginx
+  registry:
+    image: registry:2
     ports:
-      - "1443:443"      
-    volumes:
-      - "./nginx/conf/:/etc/nginx/conf.d/:rw"
-    networks:
-      - frontend-nw
-    depends_on:
-      - api
-      - frontend
-    restart: always
-    command: [nginx-debug, '-g', 'daemon off;']
-
-  database:
-    container_name: devenv-db
-    image: mariadb:latest
-    expose:
-      - 3306
-    volumes:
-      - ./db/data:/var/lib/mysql:rw
-      - ./db/init/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    - "5000:5000"
     environment:
-      MARIADB_ROOT_PASSWORD: secret
-      MARIADB_USER: user
-      MARIADB_PASSWORD: pass
-    networks:
-      - backend
-    restart: always
-
-  api:
-    container_name: devenv-minimalapi
-    image: devenv-api
-    expose:
-      - 80
-    networks:
-      - backend
-    restart: always
-
-  frontend:
-    container_name: devenv-fe
-    image: devenv-frontend
-    networks:
-      - backend
-      - frontend-nw
-    expose:
-      - 80
-    restart: always
-    environment:
-      ASPNETCORE_ENVIRONMENT: "Staging"
-      UsersEndpoint: "http://devenv-minimalapi/users"
-
-networks:
-  backend:
-    name: devenv-backend-network  
-    driver: bridge
-  frontend-nw:
-    name: devenv-frontend-network  
-    driver: bridge
-
-         
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+    volumes:
+      - ./auth:/auth

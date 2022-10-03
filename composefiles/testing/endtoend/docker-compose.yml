@@ -23,6 +23,8 @@ services:
       - 80
     networks:
       - backend-e2e
+    environment:
+      DevenvConnectionString: "Server=devenv-db-e2e;Port=3306;Uid=root;Pwd=secret;Database=userdb;sslmode=none;"
     restart: always
 
   frontend:
@@ -33,6 +35,8 @@ services:
       - frontend-e2e
     expose:
       - 80
+    ports:
+      - "5002:80"
     restart: always
     environment:
       UsersEndpoint: "http://devenv-minimalapi-e2e/users"

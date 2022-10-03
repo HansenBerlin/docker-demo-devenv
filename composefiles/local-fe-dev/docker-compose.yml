@@ -1,51 +1,49 @@
 version: "3.7"
 services:
   database:
-    container_name: devenv-db
+    container_name: devenv-db-dev
     image: mariadb:latest
     expose:
       - 3306
     ports:
       - "3307:3306"
     volumes:
-      - ./../../db/data:/var/lib/mysql:rw
-      - ./../../db/init/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./db/data:/var/lib/mysql:rw
+      - ./db/init/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     environment:
       MARIADB_ROOT_PASSWORD: secret
       MARIADB_USER: user
       MARIADB_PASSWORD: pass
     networks:
-      - backend
+      - backend-dev
     restart: always
 
   api:
-    container_name: devenv-minimalapi
+    container_name: devenv-minimalapi-dev
     image: devenv-api
     expose:
       - 80
     ports:
       - "5000:80"
     networks:
-      - backend
+      - backend-dev
     restart: always
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+      DevenvConnectionString: "Server=devenv-db-dev;Port=3306;Uid=root;Pwd=secret;Database=userdb;sslmode=none;"
+
 
   api-mock:
     image: mockoon/cli:latest
-    container_name: devenv-mockapi
+    container_name: devenv-mockapi-dev
     command: -d https://raw.githubusercontent.com/HansenBerlin/devenv-api-mock/main/doc/data.json -p 3000
     ports:
       - "3000:3000"
-    volumes:
-      - ./../../devenv-api-mock/doc:/usr/share/nginx/html/doc
     networks:
-      - backend
-    environment:
-      API_URL: doc/swagger.yaml
+      - backend-dev
 
 networks:
-  backend:
+  backend-dev:
     name: devenv-local-backend-network  
     driver: bridge
 

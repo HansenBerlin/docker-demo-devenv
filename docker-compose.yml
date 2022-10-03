@@ -3,8 +3,10 @@ services:
   nginx_local_dev_proxy:
     container_name: devenv-rp-staging
     image: 139.162.185.180:5000/devenv-nginx
+    expose:
+      - 443
     ports:
-      - "1443:443"      
+      - "443:443"      
     volumes:
       - "./nginx/conf/:/etc/nginx/conf.d/:rw"
     networks:

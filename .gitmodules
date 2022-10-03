@@ -4,3 +4,6 @@
 [submodule "frontend/devenv-frontend"]
 	path = frontend/devenv-frontend
 	url = https://github.com/HansenBerlin/devenv-frontend.git
+[submodule "backendmocked/devenv-api-mock"]
+	path = backendmocked/devenv-api-mock
+	url = https://github.com/HansenBerlin/devenv-api-mock.git

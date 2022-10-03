@@ -1,14 +1,14 @@
 version: "3.7"
 services:
   nginx_local_dev_proxy:
-    container_name: devenv-rp
-    image: devenv-nginx
+    container_name: devenv-rp-staging
+    image: 139.162.185.180:5000/devenv-nginx
     ports:
       - "1443:443"      
     volumes:
       - "./nginx/conf/:/etc/nginx/conf.d/:rw"
     networks:
-      - frontend-nw
+      - frontend-production
     depends_on:
       - api
       - frontend
@@ -16,7 +16,7 @@ services:
     command: [nginx-debug, '-g', 'daemon off;']
 
   database:
-    container_name: devenv-db
+    container_name: database
     image: mariadb:latest
     expose:
       - 3306
@@ -28,37 +28,39 @@ services:
       MARIADB_USER: user
       MARIADB_PASSWORD: pass
     networks:
-      - backend
+      - backend-production
     restart: always
 
   api:
-    container_name: devenv-minimalapi
-    image: devenv-api
+    container_name: api
+    image: 139.162.185.180:5000/devenv-api:latest
     expose:
       - 80
     networks:
-      - backend
+      - backend-production
+    environment:
+      DevenvConnectionString: "Server=database;Port=3306;Uid=root;Pwd=secret;Database=userdb;sslmode=none;"
     restart: always
 
   frontend:
-    container_name: devenv-fe
-    image: devenv-frontend
+    container_name: frontend
+    image: 139.162.185.180:5000/devenv-frontend:latest
     networks:
-      - backend
-      - frontend-nw
+      - backend-production
+      - frontend-production
     expose:
       - 80
     restart: always
     environment:
-      ASPNETCORE_ENVIRONMENT: "Staging"
-      UsersEndpoint: "http://devenv-minimalapi/users"
+      ASPNETCORE_ENVIRONMENT: "Production"
+      UsersEndpoint: "http://api/users"
 
 networks:
-  backend:
-    name: devenv-backend-network  
+  backend-production:
+    name: backend-nw-production
     driver: bridge
-  frontend-nw:
-    name: devenv-frontend-network  
+  frontend-production:
+    name: frontend-nw-production
     driver: bridge
 
          

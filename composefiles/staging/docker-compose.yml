@@ -6,7 +6,7 @@ services:
     ports:
       - "1443:443"      
     volumes:
-      - "./../../nginx/conf/:/etc/nginx/conf.d/:rw"
+      - "./conf/:/etc/nginx/conf.d/:rw"
     networks:
       - frontend-nw-staging
     depends_on:

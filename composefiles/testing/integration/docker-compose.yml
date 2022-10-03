@@ -1,0 +1,34 @@
+version: "3.7"
+services:
+  frontend:
+    container_name: devenv-fe-testing
+    image: devenv-frontend
+    networks:
+      - testing
+    expose:
+      - 80
+    ports:
+      - "5002:80"
+    restart: always
+    environment:
+      UsersEndpoint: "http://devenv-mockapi-testing:8080/users"
+  
+  api-mock:
+    image: mockoon/cli:latest
+    container_name: devenv-mockapi-testing
+    command: -d https://raw.githubusercontent.com/HansenBerlin/devenv-api-mock/main/doc/data.json -p 3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./../../devenv-api-mock/doc:/usr/share/nginx/html/doc
+    networks:
+      - testing
+    environment:
+      API_URL: doc/swagger.yaml
+
+networks:
+  testing:
+    name: devenv-testing-nw
+    driver: bridge
+
+         

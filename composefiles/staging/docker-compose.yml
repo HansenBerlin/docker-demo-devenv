@@ -1,0 +1,66 @@
+version: "3.7"
+services:
+  nginx_local_dev_proxy:
+    container_name: devenv-rp-staging
+    image: devenv-nginx
+    ports:
+      - "1443:443"      
+    volumes:
+      - "./../../nginx/conf/:/etc/nginx/conf.d/:rw"
+    networks:
+      - frontend-nw-staging
+    depends_on:
+      - api
+      - frontend
+    restart: always
+    command: [nginx-debug, '-g', 'daemon off;']
+
+  database:
+    container_name: devenv-db-staging
+    image: mariadb:latest
+    expose:
+      - 3306
+    volumes:
+      - ./../../db/data:/var/lib/mysql:rw
+      - ./../../db/init/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    environment:
+      MARIADB_ROOT_PASSWORD: secret
+      MARIADB_USER: user
+      MARIADB_PASSWORD: pass
+    networks:
+      - backend-nw-staging
+    restart: always
+
+  api:
+    container_name: devenv-minimalapi-staging
+    image: devenv-api
+    expose:
+      - 80
+    networks:
+      - backend-nw-staging
+    environment:
+      DevenvConnectionString: "Server=devenv-db-staging;Port=3306;Uid=root;Pwd=secret;Database=userdb;sslmode=none;"
+    restart: always
+
+  frontend:
+    container_name: devenv-fe-staging
+    image: devenv-frontend
+    networks:
+      - backend-nw-staging
+      - frontend-nw-staging
+    expose:
+      - 80
+    restart: always
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Staging"
+      UsersEndpoint: "http://devenv-minimalapi-staging/users"
+
+networks:
+  backend-nw-staging:
+    name: devenv-backend-network-staging
+    driver: bridge
+  frontend-nw-staging:
+    name: devenv-frontend-network-staging
+    driver: bridge
+
+         

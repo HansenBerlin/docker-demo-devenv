@@ -52,8 +52,9 @@ CAdvisor: http://hostip:8080/docker/containername**
 ![image](assets/images/grafana.png)
 <p style="text-align: center; margin-top:-15px; font-size:0.8em">Network monitoring in Grafana. The dashboard shown is setup in the mounted dashboard.json file</p>
 
-![image](assets/images/cadvisor.png)
-<p style="text-align: center; margin-top:-15px; font-size:0.8em">Container monitoring in CAdvisor</p>
+| ![image](assets/images/cadvisor.png) |
+|:--:|
+| *Container monitoring in CAdvisor* |
 
 ## Setup a complete production environment
 ### Prerequisites

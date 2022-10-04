@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   database:
-    container_name: devenv-db-dev
+    container_name: database-localdev
     image: mariadb:latest
     expose:
       - 3306
@@ -19,8 +19,9 @@ services:
     restart: always
 
   api:
-    container_name: devenv-minimalapi-dev
-    image: devenv-api
+    container_name: api-localdev
+    build:
+      context: ./../../backend/devenv-backend
     expose:
       - 80
     ports:
@@ -30,15 +31,15 @@ services:
     restart: always
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      DevenvConnectionString: "Server=devenv-db-dev;Port=3306;Uid=root;Pwd=secret;Database=userdb;sslmode=none;"
+      DevenvConnectionString: "Server=database-localdev;Port=3306;Uid=root;Pwd=secret;Database=userdb;sslmode=none;"
 
 
   api-mock:
     image: mockoon/cli:latest
-    container_name: devenv-mockapi-dev
+    container_name: mockapi-localdev
     command: -d https://raw.githubusercontent.com/HansenBerlin/devenv-api-mock/main/doc/data.json -p 3000
     ports:
-      - "3000:3000"
+      - "3001:3000"
     networks:
       - backend-dev
 

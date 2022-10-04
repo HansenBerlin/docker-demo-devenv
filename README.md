@@ -10,9 +10,11 @@ The readme describes a quick setup of the whole environment, as well as further 
 - [Fast setup of a complete production environment](#fast-setup-of-a-complete-production-environment)
   - [Prerequisites](#prerequisites)
   - [Installation of prerequisites](#installation-of-prerequisites)
+    - [Linux (Debian)](#linux-debian)
+    - [Windows](#windows)
   - [Build environment for production step with Docker](#build-environment-for-production-step-with-docker)
   - [Build environments from other production steps](#build-environments-from-other-production-steps)
-- [Advanced setup topics](#advanced-setup-topics)
+- [Advanced configuration](#advanced-configuration)
   - [Frontend Webservice](#frontend-webservice)
   - [API](#api)
   - [Mock API](#mock-api)
@@ -24,6 +26,8 @@ The readme describes a quick setup of the whole environment, as well as further 
   - [Change database](#change-database)
   - [Grafana and Prometheus](#grafana-and-prometheus)
   - [Network](#network)
+- [Default credentials](#default-credentials)
+- [Todo / out of scope for now](#todo--out-of-scope-for-now)
 
 ## What to expect?
 A complete development environment with functional demo services (web frontend, API, database), a mocked backend (Swagger/OAS 2.0), reverse proxy/load balancer and monitoring (Grafana, Prometheus, Cadvisor). All services are containerized. The container composition and network configuration for the deployment steps local development, integration testing, end to end testing, staging and production are stored in separate docker-compose files.  
@@ -95,6 +99,18 @@ CAdvisor: http://hostip:8080/docker/containername**
 - Git
 
 ### Installation of prerequisites
+#### Linux (Debian)
+- ```curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh```
+- ```sudo spt update```
+- ```sudo install docker-compose```
+- if you want Docker to start after rebooting run ```sudo systemctl enable docker.service``` and ```sudo systemctl enable containerd.service```
+- check if docker is running with ```service docker status```. If it is not, run ```service docker start``` and check again
+- if git is not installed already run ```sudo apt install git```
+
+#### Windows
+- run ```DISM /online /enable-feature /featurename:Microsoft-Hyper-V-All``` as admin or search for advanced features and activate Hyper-V
+- download and install Docker Desktop
+- download and install git
 
 ### Build environment for production step with Docker
 - ```cd``` or ```mkdir``` (to) a directory of your choice
@@ -105,24 +121,53 @@ CAdvisor: http://hostip:8080/docker/containername**
 - if everything worked, you can access the services via the ports described in the previous step
 
 ### Build environments from other production steps
+Within the composefiles directory you can find several docker-compose files. ```cd``` into the directory and run ```docker-compose up -d``` to run the appropriate containers for the chosen environment. For a teardown of all containers run ```docker-compose down``` from the same directory you ran the first command.   
+If a database is used (like in fe-dev-local, staging and endtoend testing) the data folder witihin the directory is populated with the database content. After teardown the **files are not deleted and reused** when spinning the containers up again. If you want a clean database with the sample data, just delete the content of the data folder before running ```docker-compose up -d```.  
+**Some files point to a private registry that might be shutdown in the future and might stop working.**
 
-## Advanced setup topics
+## Advanced configuration
+tbd
 ### Frontend Webservice
+tbd
 ### API
+tbd
 ### Mock API
+tbd
 ### Database
+tbd
 ### Nginx
-### Grafana & Prometheus
+Nginx directory file structure:
+certs/  
+├─ localhost.crt  
+├─ localhost.key  
+conf/  
+├─ default.conf  
+Dockerfile  
 
+tbd
+### Grafana & Prometheus
+tbd
 ## Customization
+tbd
 ### Rebuild and replace services
+tbd
 ### Change database
+tbd
 ### Grafana and Prometheus
+tbd
 ### Network
 
-dc: root, secret
-grafana: admin, grafana
-registry: testuser, testpassword
+## Default credentials
+dc: root, secret  
+grafana: admin, grafana  
+registry: testuser, testpassword  
+
+## Todo / out of scope for now
+- integrate build server (Jenkins or TeamCity)
+- add custom dashboards to Grafana
+- extract ORM service for more generic database access
+- add manual for setup with cloud providers
+- change path to Dockerfile instead of private registry in docker compose files
 
 
 

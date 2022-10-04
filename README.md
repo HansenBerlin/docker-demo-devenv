@@ -7,11 +7,13 @@ The readme describes a quick setup of the whole environment, as well as further 
 A complete development environment with functional demo services (web frontend, API, database), a mocked backend (Swagger/OAS 2.0), reverse proxy/load balancer and monitoring (Grafana, Prometheus, Cadvisor). All services are containerized. The container composition and network configuration for the deployment steps local development, integration testing, end to end testing, staging and production are stored in separate docker-compose files.  
 The specified ports refer to the production setup, which is described in the next step. In the setups of the other steps, the ports may differ (see detailed setup).
 
-![image](assets/images/deployment.png)
-<p style="text-align: center; margin-top:-15px; font-size:0.8em">Reusing containers during deployment steps</p>
+| ![image](assets/images/deployment.png) |
+|:--:|
+| *Reusing containers during deployment steps* |
 
-![image](assets/images/physical.png)
-<p style="text-align: center; margin-top:-15px; font-size:0.8em">Basic model of physical components and networking</p>
+| ![image](assets/images/physical.png) |
+|:--:|
+| *Basic model of physical components and networking* |
 
 
 ### Webservice
@@ -19,28 +21,34 @@ A simple web page to retrieve, modify, add and delete users from a database.
 
 **Access via https://hostip**
 
-![image](assets/images/webservice-start.png)
-<p style="text-align: center; margin-top:-15px; font-size:0.8em">Start page requesting all users</p>
+| ![image](assets/images/webservice-start.png) |
+|:--:|
+| *Start page requesting all users* |
 
-![image](assets/images/webservice-add.png)
-<p style="text-align: center; margin-top:-15px; font-size:0.8em">Adding a user (includes valid mail valdiation check)</p>
+| ![image](assets/images/webservice-add.png) |
+|:--:|
+| *Adding a user (includes valid mail valdiation check)* |
 
 ### Backend
 A minimal API implemented in NET (using swagger UI to show endpoint options), a MySQL (Maria) database with sample data already setup and a container running a mocked API (config file is pulled from repo and can be changed on runtime).
 
 **None of the backendservices are directly accessible in the default setup. Check detailed setup section for further information on how to access these containers.**
 
-![image](assets/images/swagger.png)
-<p style="text-align: center; margin-top:-15px; font-size:0.8em">Swagger UI of the API container</p>
+| ![image](assets/images/swagger.png) |
+|:--:|
+| *Swagger UI of the API container* |
 
-![image](assets/images/swagger2.png)
-<p style="text-align: center; margin-top:-15px; font-size:0.8em">Demo request to /users endpoint showing the sample data</p>
+| ![image](assets/images/swagger2.png) |
+|:--:|
+| *Demo request to /users endpoint showing the sample data* |
 
-![image](assets/images/mocked.png)
-<p style="text-align: center; margin-top:-15px; font-size:0.8em">Same endpoint /users requested from mocked API container</p>
+| ![image](assets/images/mocked.png) |
+|:--:|
+| *Same endpoint /users requested from mocked API container* |
 
-![image](assets/images/database.png)
-<p style="text-align: center; margin-top:-15px; font-size:0.8em">Sample data in Maria DB container (mounted to data directory in db directory)</p>
+| ![image](assets/images/database.png) |
+|:--:|
+| *Sample data in Maria DB container (mounted to data directory in db directory)* |
 
 ### Monitoring
 To represent as realistic a scenario as possible, a stack for visualization (Grafana), time-based data collection (Prometheus) and container monitoring (CAdvisor) is provided for monitoring. The necessary configuration has already been done.
@@ -49,8 +57,9 @@ To represent as realistic a scenario as possible, a stack for visualization (Gra
 Grafana: http://hostip:3000, user: admin, pw: grafana  
 CAdvisor: http://hostip:8080/docker/containername**
 
-![image](assets/images/grafana.png)
-<p style="text-align: center; margin-top:-15px; font-size:0.8em">Network monitoring in Grafana. The dashboard shown is setup in the mounted dashboard.json file</p>
+| ![image](assets/images/grafana.png) |
+|:--:|
+| *Network monitoring in Grafana. The dashboard shown is setup in the mounted dashboard.json file* |
 
 | ![image](assets/images/cadvisor.png) |
 |:--:|

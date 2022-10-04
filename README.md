@@ -1,7 +1,9 @@
 <!-- omit in toc -->
 # Demo development environment for deploying microservices
 The repo serves as the basis for a docker setup of a deployment architecture for microservices development. Web service (frontend) and API (backend) are implemented in .NET 6 as an example, but can be exchanged quickly and easily.
-The readme describes a quick setup of the whole environment, as well as further details to reproduce this or a similar environment in the second part.
+The readme describes a quick setup of the whole environment, as well as further details to reproduce this or a similar environment in the second part.  
+
+**Altough this contains an environment for "production", don't use it for real production purposes (e.g.: certificates are self signed and publicly available in this repo...).**
 
 - [What to expect?](#what-to-expect)
   - [Webservice](#webservice)
@@ -15,6 +17,9 @@ The readme describes a quick setup of the whole environment, as well as further 
   - [Build environment for production step with Docker](#build-environment-for-production-step-with-docker)
   - [Build environments from other production steps](#build-environments-from-other-production-steps)
 - [Advanced configuration](#advanced-configuration)
+  - [Private Docker registry](#private-docker-registry)
+    - [local](#local)
+    - [remote](#remote)
   - [Frontend Webservice](#frontend-webservice)
   - [API](#api)
   - [Mock API](#mock-api)
@@ -126,6 +131,12 @@ If a database is used (like in fe-dev-local, staging and endtoend testing) the d
 **Some files point to a private registry that might be shutdown in the future and might stop working.**
 
 ## Advanced configuration
+tbd
+### Private Docker registry
+tbd
+#### local
+tbd
+#### remote
 tbd
 ### Frontend Webservice
 tbd

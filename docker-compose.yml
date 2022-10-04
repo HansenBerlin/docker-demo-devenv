@@ -2,7 +2,6 @@ version: "3.7"
 services:
   nginx:
     container_name: nginx
-    image: 139.162.185.180:5000/devenv-nginx
     expose:
       - 443
     ports:
@@ -11,6 +10,8 @@ services:
       - "./nginx/conf/:/etc/nginx/conf.d/:rw"
     networks:
       - frontend-production
+    build:
+      context: ./nginx
     depends_on:
       - api
       - frontend
@@ -35,23 +36,25 @@ services:
 
   api:
     container_name: api
-    image: 139.162.185.180:5000/devenv-api:latest
     expose:
       - 80
     networks:
       - backend-production
+    build:
+      context: ./backend/devenv-backend
     environment:
       DevenvConnectionString: "Server=database;Port=3306;Uid=root;Pwd=secret;Database=userdb;sslmode=none;"
     restart: always
 
   frontend:
     container_name: frontend
-    image: 139.162.185.180:5000/devenv-frontend:latest
     networks:
       - backend-production
       - frontend-production
     expose:
       - 80
+    build:
+      context: ./frontend/devenv-frontend
     restart: always
     environment:
       ASPNETCORE_ENVIRONMENT: "Production"
@@ -68,6 +71,8 @@ services:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     depends_on:
       - cadvisor
+    networks:
+      - monitoring
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
@@ -83,20 +88,26 @@ services:
       - nginx
       - api
       - frontend
+    networks:
+      - monitoring
 
   grafana:
-    image: grafana/grafana
     container_name: grafana
     ports:
       - 3000:3000
+    build:
+      context: ./grafana
     restart: unless-stopped
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=grafana
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: grafana
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: "/var/lib/grafana/dashboards/dashboard.json"
     volumes:
       - ./grafana:/etc/grafana/provisioning/datasources
     depends_on:
       - prometheus
+    networks:
+      - monitoring
 
 networks:
   backend-production:
@@ -104,6 +115,9 @@ networks:
     driver: bridge
   frontend-production:
     name: frontend-nw-production
+    driver: bridge
+  monitoring:
+    name: monitoring-nw-production
     driver: bridge
 
          

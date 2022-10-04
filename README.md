@@ -1,7 +1,29 @@
+<!-- omit in toc -->
 # Demo development environment for deploying microservices
 The repo serves as the basis for a docker setup of a deployment architecture for microservices development. Web service (frontend) and API (backend) are implemented in .NET 6 as an example, but can be exchanged quickly and easily.
 The readme describes a quick setup of the whole environment, as well as further details to reproduce this or a similar environment in the second part.
 
+- [What to expect?](#what-to-expect)
+  - [Webservice](#webservice)
+  - [Backend](#backend)
+  - [Monitoring](#monitoring)
+- [Fast setup of a complete production environment](#fast-setup-of-a-complete-production-environment)
+  - [Prerequisites](#prerequisites)
+  - [Installation of prerequisites](#installation-of-prerequisites)
+  - [Build environment for production step with Docker](#build-environment-for-production-step-with-docker)
+  - [Build environments from other production steps](#build-environments-from-other-production-steps)
+- [Advanced setup topics](#advanced-setup-topics)
+  - [Frontend Webservice](#frontend-webservice)
+  - [API](#api)
+  - [Mock API](#mock-api)
+  - [Database](#database)
+  - [Nginx](#nginx)
+  - [Grafana & Prometheus](#grafana--prometheus)
+- [Customization](#customization)
+  - [Rebuild and replace services](#rebuild-and-replace-services)
+  - [Change database](#change-database)
+  - [Grafana and Prometheus](#grafana-and-prometheus)
+  - [Network](#network)
 
 ## What to expect?
 A complete development environment with functional demo services (web frontend, API, database), a mocked backend (Swagger/OAS 2.0), reverse proxy/load balancer and monitoring (Grafana, Prometheus, Cadvisor). All services are containerized. The container composition and network configuration for the deployment steps local development, integration testing, end to end testing, staging and production are stored in separate docker-compose files.  
@@ -65,20 +87,38 @@ CAdvisor: http://hostip:8080/docker/containername**
 |:--:|
 | *Container monitoring in CAdvisor* |
 
-## Setup a complete production environment
+## Fast setup of a complete production environment
 ### Prerequisites
 - Docker
 - Docker Compose
 - Docker service running
 - Git
 
-### Build
+### Installation of prerequisites
+
+### Build environment for production step with Docker
 - ```cd``` or ```mkdir``` (to) a directory of your choice
 - run ```git clone --recurse-submodules https://github.com/HansenBerlin/docker-demo-devenv.git``` from within that directory
 - run ```cd docker-demo-devenv``` to change to the directory that was created by git
 - run ```docker-compose up -d``` to start all services. This might take some time the first time you do this - depending on the images already available in your local registry and your internet connection.
 - after everything is setup (you should see the prompt in your CLI again, without any errors being shown), open https://yourhostip in your browser
 - if everything worked, you can access the services via the ports described in the previous step
+
+### Build environments from other production steps
+
+## Advanced setup topics
+### Frontend Webservice
+### API
+### Mock API
+### Database
+### Nginx
+### Grafana & Prometheus
+
+## Customization
+### Rebuild and replace services
+### Change database
+### Grafana and Prometheus
+### Network
 
 dc: root, secret
 grafana: admin, grafana

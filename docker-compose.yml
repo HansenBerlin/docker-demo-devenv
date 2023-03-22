@@ -3,9 +3,9 @@ services:
   nginx:
     container_name: nginx
     expose:
-      - 443
+      - 1443
     ports:
-      - "443:443"      
+      - "1443:443"      
     volumes:
       - "./nginx/conf/:/etc/nginx/conf.d/:rw"
     networks:
@@ -23,6 +23,8 @@ services:
     image: mariadb:latest
     expose:
       - 3306
+    ports:
+      - "3306:3306" 
     volumes:
       - ./db/data:/var/lib/mysql:rw
       - ./db/init/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
@@ -38,12 +40,15 @@ services:
     container_name: api
     expose:
       - 80
+    ports:
+      - "5001:80" 
     networks:
       - backend-production
     build:
       context: ./backend/devenv-backend
     environment:
-      DevenvConnectionString: "Server=database;Port=3306;Uid=root;Pwd=secret;Database=userdb;sslmode=none;"
+      DB_CONNECTION_STRING: "Server=database;Port=3306;Uid=root;Pwd=secret;Database=userdb;sslmode=none;"
+      ASPNETCORE_ENVIRONMENT: "Development"
     restart: always
 
   frontend:
